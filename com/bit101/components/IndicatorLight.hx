@@ -37,12 +37,9 @@ package com.bit101.components;
 	
 	class IndicatorLight extends Component {
 		
-		public var color(getColor, setColor) : UInt
-		;
-		public var isFlashing(getIsFlashing, null) : Bool
-		;
-		public var isLit(getIsLit, setIsLit) : Bool
-		;
+		public var color(_getColor, _setColor) : UInt ;
+		public var isFlashing(_getIsFlashing, null) : Bool ;
+		public var isLit(_getIsLit, _setIsLit) : Bool ;
 		var _color:UInt;
 		var _lit:Bool ;
 		var _label:Label;
@@ -60,11 +57,9 @@ package com.bit101.components;
 		 * @param color The color of this light.
 		 * @param label String containing the label for this component.
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?color:UInt = 0xff0000, ?label:String = "")
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?color:UInt = 0xff0000, ?label:String = "")
 		{
-			
 			_lit = false;
-			_labelText = "";
 			_color = color;
 			_labelText = label;
 			super(parent, xpos, ypos);
@@ -98,14 +93,17 @@ package com.bit101.components;
 		 */
 		function drawLite():Void
 		{
-			var colors:Array<Dynamic>;
+			var colors:Array<UInt>;
 			if(_lit)
 			{
 				colors = [0xffffff, _color];
 			}
 			else
 			{
-				colors = [0xffffff, 0];
+                var r:UInt = Math.round(((_color & 0xff0000) >> 16)*0.3);
+                var g:UInt = Math.round(((_color & 0x00ff00) >> 8)*0.3);
+                var b:UInt = Math.round(((_color & 0x0000ff))*0.3);
+				colors = [0xffffff, (r<<16)|(g<<8)|b ];
 			}
 			
 			_lite.graphics.clear();
@@ -148,8 +146,8 @@ package com.bit101.components;
 			drawLite();
 			
 			_label.text = _labelText;
-			_label.x = _width + 2;
-			_label.y = _height / 2 - _label.height / 2;
+			_label._x = _width + 2;
+			_label._y = _height / 2 - _label._height / 2;
 		}
 		
 		/**
@@ -177,14 +175,14 @@ package com.bit101.components;
 		/**
 		 * Sets or gets whether or not the light is lit.
 		 */
-		public function setIsLit(value:Bool):Bool
+		public function _setIsLit(value:Bool):Bool
 		{
 			_timer.stop();
 			_lit = value;
 			drawLite();
 			return value;
 		}
-		public function getIsLit():Bool
+		public function _getIsLit():Bool
 		{
 			return _lit;
 		}
@@ -192,13 +190,13 @@ package com.bit101.components;
 		/**
 		 * Sets / gets the color of this light (when lit).
 		 */
-		public function setColor(value:UInt):UInt
+		public function _setColor(value:UInt):UInt
 		{
 			_color = value;
 			draw();
 			return value;
 		}
-		public function getColor():UInt
+		public function _getColor():UInt
 		{
 			return _color;
 		}
@@ -206,7 +204,7 @@ package com.bit101.components;
 		/**
 		 * Returns whether or not the light is currently flashing.
 		 */
-		public function getIsFlashing():Bool
+		public function _getIsFlashing():Bool
 		{
 			return _timer.running;
 		}

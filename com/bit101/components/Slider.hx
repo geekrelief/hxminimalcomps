@@ -36,20 +36,16 @@ package com.bit101.components;
 	
 	class Slider extends Component {
 		
-		public var backClick(getBackClick, setBackClick) : Bool
-		;
-		public var maximum(getMaximum, setMaximum) : Float
-		;
-		public var minimum(getMinimum, setMinimum) : Float
-		;
-		public var value(getValue, setValue) : Float
-		;
+		public var backClick(_getBackClick, _setBackClick) : Bool ;
+		public var maximum(_getMaximum, _setMaximum) : Float ;
+		public var minimum(_getMinimum, _setMinimum) : Float ;
+		public var value(_getValue, _setValue) : Float ;
 		var _handle:Sprite;
 		var _back:Sprite;
 		var _backClick:Bool ;
-		var _value:Int ;
-		var _max:Int ;
-		var _min:Int ;
+		var _value:Float ;
+		var _max:Float ;
+		var _min:Float ;
 		var _orientation:String;
 		
 		public static var HORIZONTAL:String = "horizontal";
@@ -62,10 +58,12 @@ package com.bit101.components;
 		 * @param ypos The y position to place this component.
 		 * @param defaultHandler The event handling function to handle the default event for this component (change in this case).
 		 */
-		public function new(?orientation:String = Slider.HORIZONTAL, ?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?defaultHandler:Dynamic = null)
+		public function new(?orientation:String, ?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?defaultHandler:Dynamic = null)
 		{
-			
-			_backClick = false;
+		    if(orientation == null){
+                orientation = Slider.HORIZONTAL;
+            }
+			_backClick = true;
 			_value = 0;
 			_max = 100;
 			_min = 0;
@@ -157,13 +155,11 @@ package com.bit101.components;
 		{
 			if(_max > _min)
 			{
-				_value = Math.min(_value, _max);
-				_value = Math.max(_value, _min);
+				_value = Math.max(Math.min(_value, _max), _min);
 			}
 			else
 			{
-				_value = Math.max(_value, _max);
-				_value = Math.min(_value, _min);
+				_value = Math.min(Math.max(_value, _max), _min);
 			}
 		}
 		
@@ -176,17 +172,15 @@ package com.bit101.components;
 			var range:Float;
 			if(_orientation == HORIZONTAL)
 			{
-				range = width - height;
+				range = _width - _height;
 				_handle.x = (_value - _min) / (_max - _min) * range;
 			}
 			else
 			{
-				range = height - width;
+				range = _height - _width;
 				_handle.y = _height - _width - (_value - _min) / (_max - _min) * range;
 			}
 		}
-		
-		
 		
 		
 		///////////////////////////////////
@@ -231,17 +225,15 @@ package com.bit101.components;
 		{
 			if(_orientation == HORIZONTAL)
 			{
-				_handle.x = mouseX - height / 2;
-				_handle.x = Math.max(_handle.x, 0);
-				_handle.x = Math.min(_handle.x, width - height);
-				_value = _handle.x / (width - height) * (_max - _min) + _min;
+				_handle.x = mouseX - _height / 2;
+				_handle.x = Math.min(Math.max(_handle.x, 0), _width - _height);
+				_value = _handle.x / (_width - _height) * (_max - _min) + _min;
 			}
 			else
 			{
-				_handle.y = mouseY - width / 2;
-				_handle.y = Math.max(_handle.y, 0);
-				_handle.y = Math.min(_handle.y, height - width);
-				_value = (_height - _width - _handle.y) / (height - width) * (_max - _min) + _min;
+				_handle.y = mouseY - _width / 2;
+				_handle.y = Math.min(Math.max(_handle.y, 0), _height - _width);
+				_value = (_height - _width - _handle.y) / (_height - _width) * (_max - _min) + _min;
 			}
 			dispatchEvent(new Event(Event.CHANGE));
 			
@@ -257,11 +249,11 @@ package com.bit101.components;
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, onSlide);
 			if(_orientation == HORIZONTAL)
 			{
-				_handle.startDrag(false, new Rectangle(0, 0, width - height, 0));
+				_handle.startDrag(false, new Rectangle(0, 0, _width - _height, 0));
 			}
 			else
 			{
-				_handle.startDrag(false, new Rectangle(0, 0, 0, height - width));
+				_handle.startDrag(false, new Rectangle(0, 0, 0, _height - _width));
 			}
 		}
 		
@@ -282,14 +274,14 @@ package com.bit101.components;
 		 */
 		function onSlide(event:MouseEvent):Void
 		{
-			var oldValue:Int = _value;
+			var oldValue:Float = _value;
 			if(_orientation == HORIZONTAL)
 			{
-				_value = _handle.x / (width - height) * (_max - _min) + _min;
+				_value = _handle.x / (_width - _height) * (_max - _min) + _min;
 			}
 			else
 			{
-				_value = (_height - _width - _handle.y) / (height - width) * (_max - _min) + _min;
+				_value = (_height - _width - _handle.y) / (_height - _width) * (_max - _min) + _min;
 			}
 			if(_value != oldValue)
 			{
@@ -307,13 +299,13 @@ package com.bit101.components;
 		/**
 		 * Sets / gets whether or not a click on the background of the slider will move the handler to that position.
 		 */
-		public function setBackClick(b:Bool):Bool
+		public function _setBackClick(b:Bool):Bool
 		{
 			_backClick = b;
 			invalidate();
 			return b;
 		}
-		public function getBackClick():Bool
+		public function _getBackClick():Bool
 		{
 			return _backClick;
 		}
@@ -321,14 +313,14 @@ package com.bit101.components;
 		/**
 		 * Sets / gets the current value of this slider.
 		 */
-		public function setValue(v:Float):Float
+		function _setValue(v:Float):Float
 		{
 			_value = v;
 			correctValue();
 			positionHandle();
 			return v;
 		}
-		public function getValue():Float
+		function _getValue():Float
 		{
 			return _value;
 		}
@@ -336,14 +328,14 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the maximum value of this slider.
 		 */
-		public function setMaximum(m:Float):Float
+		function _setMaximum(m:Float):Float
 		{
 			_max = m;
 			correctValue();
 			positionHandle();
 			return m;
 		}
-		public function getMaximum():Float
+		function _getMaximum():Float
 		{
 			return _max;
 		}
@@ -351,14 +343,14 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the minimum value of this slider.
 		 */
-		public function setMinimum(m:Float):Float
+		function _setMinimum(m:Float):Float
 		{
 			_min = m;
 			correctValue();
 			positionHandle();
 			return m;
 		}
-		public function getMinimum():Float
+		function _getMinimum():Float
 		{
 			return _min;
 		}

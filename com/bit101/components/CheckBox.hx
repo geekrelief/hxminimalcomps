@@ -34,10 +34,8 @@ package com.bit101.components;
 	
 	class CheckBox extends Component {
 		
-		public var label(getLabel, setLabel) : String
-		;
-		public var selected(getSelected, setSelected) : Bool
-		;
+		public var label(_getLabel, _setLabel) : String ;
+		public var selected(_getSelected, _setSelected) : Bool ;
 		var _back:Sprite;
 		var _button:Sprite;
 		var _label:Label;
@@ -53,7 +51,7 @@ package com.bit101.components;
 		 * @param label String containing the label for this component.
 		 * @param defaultHandler The event handling function to handle the default event for this component (click in this case).
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?label:String = "", ?defaultHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?label:String = "", ?defaultHandler:Dynamic = null)
 		{
 			
 			_labelText = "";
@@ -151,13 +149,13 @@ package com.bit101.components;
 		/**
 		 * Sets / gets the label text shown on this CheckBox.
 		 */
-		public function setLabel(str:String):String
+		function _setLabel(str:String):String
 		{
 			_labelText = str;
 			invalidate();
 			return str;
 		}
-		public function getLabel():String
+		function _getLabel():String
 		{
 			return _labelText;
 		}
@@ -165,13 +163,13 @@ package com.bit101.components;
 		/**
 		 * Sets / gets the selected state of this CheckBox.
 		 */
-		public function setSelected(s:Bool):Bool
+		function _setSelected(s:Bool):Bool
 		{
 			_selected = s;
 			_button.visible = _selected;
 			return s;
 		}
-		public function getSelected():Bool
+		function _getSelected():Bool
 		{
 			return _selected;
 		}

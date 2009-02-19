@@ -33,21 +33,16 @@ package com.bit101.components;
 
 	class UISlider extends Component {
 		
-		public var label(getLabel, setLabel) : String
-		;
-		public var labelPrecision(getLabelPrecision, setLabelPrecision) : Int
-		;
-		public var maximum(getMaximum, setMaximum) : Float
-		;
-		public var minimum(getMinimum, setMinimum) : Float
-		;
-		public var value(getValue, setValue) : Float
-		;
+		public var label(_getLabel, _setLabel) : String ;
+		public var labelPrecision(_getLabelPrecision, _setLabelPrecision) : Int ;
+		public var maximum(_getMaximum, _setMaximum) : Float ;
+		public var minimum(_getMinimum, _setMinimum) : Float ;
+		public var value(_getValue, _setValue) : Float ;
 		var _label:Label;
 		var _valueLabel:Label;
 		var _slider:Slider;
 		var _precision:Int ;
-		var _sliderClass:Class<Dynamic>;
+		var _sliderClass:Class<Slider>;
 		var _labelText:String;
 		
 		
@@ -59,7 +54,7 @@ package com.bit101.components;
 		 * @param label The initial string to display as this component's label.
 		 * @param defaultHandler The event handling function to handle the default event for this component (change in this case).
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?x:Int = 0, ?y:Int = 0, ?label:String = "", ?defaultEventHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer = null, ?x:Float = 0, ?y:Float = 0, ?label:String = "", ?defaultEventHandler:Dynamic = null)
 		{
 			
 			_precision = 1;
@@ -78,7 +73,7 @@ package com.bit101.components;
 		override function addChildren():Void
 		{
 			_label = new Label(this, 0, 0);
-			_slider = new _sliderClass(this, 0, 0, onSliderChange);
+			_slider = Type.createInstance(_sliderClass, [this, 0, 18, onSliderChange]);
 			_valueLabel = new Label(this);
 		}
 		
@@ -87,14 +82,14 @@ package com.bit101.components;
 		 */
 		function formatValueLabel():Void
 		{
-			var mult:Int = Math.pow(10, _precision);
-			var val:String = (Math.round(_slider.value * mult) / mult).toString();
-			var parts:Array<Dynamic> = val.split(".");
+			var mult:Float = Math.pow(10, _precision);
+			var val:String = Std.string(Math.round(_slider.value * mult) / mult);
+			var parts:Array<String> = val.split(".");
 			if(parts[1] == null)
 			{ 
 				if(_precision > 0)
 				{
-					val += "."
+					val += ".";
 				}
 				for(i in 0..._precision)
 				{
@@ -103,13 +98,14 @@ package com.bit101.components;
 			}
 			else if(parts[1].length < _precision)
 			{
-				for(i in 0..._precision - parts[1].length)
+				for(i in 0...(_precision - parts[1].length))
 				{
 					val += "0";
 				}
 			}
 			_valueLabel.text = val;
 			positionLabel();
+            invalidate();
 		}
 		
 		/**
@@ -133,7 +129,7 @@ package com.bit101.components;
 		public override function draw():Void
 		{
 			super.draw();
-			_label.text = _labelText
+			_label.text = _labelText;
 			_label.draw();
 			formatValueLabel();
 		}
@@ -176,13 +172,13 @@ package com.bit101.components;
 		/**
 		 * Sets / gets the current value of this slider.
 		 */
-		public function setValue(v:Float):Float
+		function _setValue(v:Float):Float
 		{
 			_slider.value = v;
 			formatValueLabel();
 			return v;
 		}
-		public function getValue():Float
+		function _getValue():Float
 		{
 			return _slider.value;
 		}
@@ -190,12 +186,12 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the maximum value of this slider.
 		 */
-		public function setMaximum(m:Float):Float
+		function _setMaximum(m:Float):Float
 		{
 			_slider.maximum = m;
 			return m;
 		}
-		public function getMaximum():Float
+		function _getMaximum():Float
 		{
 			return _slider.maximum;
 		}
@@ -203,12 +199,12 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the minimum value of this slider.
 		 */
-		public function setMinimum(m:Float):Float
+		function _setMinimum(m:Float):Float
 		{
 			_slider.minimum = m;
 			return m;
 		}
-		public function getMinimum():Float
+		function _getMinimum():Float
 		{
 			return _slider.minimum;
 		}
@@ -216,12 +212,12 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the number of decimals to format the value label.
 		 */
-		public function setLabelPrecision(decimals:Int):Int
+		function _setLabelPrecision(decimals:Int):Int
 		{
 			_precision = decimals;
 			return decimals;
 		}
-		public function getLabelPrecision():Int
+		function _getLabelPrecision():Int
 		{
 			return _precision;
 		}
@@ -229,14 +225,14 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the text shown in this component's label.
 		 */
-		public function setLabel(str:String):String
+		function _setLabel(str:String):String
 		{
 			_labelText = str;
 //			invalidate();
 			draw();
 			return str;
 		}
-		public function getLabel():String
+		function _getLabel():String
 		{
 			return _labelText;
 		}

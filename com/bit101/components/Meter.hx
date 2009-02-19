@@ -35,16 +35,11 @@ package com.bit101.components;
 	
 	class Meter extends Component {
 		
-		public var label(getLabel, setLabel) : String
-		;
-		public var maximum(getMaximum, setMaximum) : Float
-		;
-		public var minimum(getMinimum, setMinimum) : Float
-		;
-		public var showValues(getShowValues, setShowValues) : Bool
-		;
-		public var value(getValue, setValue) : Float
-		;
+		public var label(_getLabel, _setLabel) : String ;
+		public var maximum(_getMaximum, _setMaximum) : Float ;
+		public var minimum(_getMinimum, _setMinimum) : Float ;
+		public var showValues(_getShowValues, _setShowValues) : Bool ;
+		public var value(_getValue, _setValue) : Float ;
 		var _damp:Float ;
 		var _dial:Sprite;
 		var _label:Label;
@@ -56,11 +51,9 @@ package com.bit101.components;
 		var _needle:Sprite;
 		var _needleMask:Sprite;
 		var _showValues:Bool ;
-		var _targetRotation:Int ;
+		var _targetRotation:Float ;
 		var _value:Float ;
-		var _velocity:Int ;
-		
-		
+		var _velocity:Float ;
 		
 		
 		/**
@@ -70,7 +63,7 @@ package com.bit101.components;
 		 * @param ypos The y position to place this component.
 		 * @param text The string to use as the initial text in this component.
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?text:String = "")
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?text:String = "")
 		{
 			
 			_damp = .8;
@@ -112,11 +105,11 @@ package com.bit101.components;
 			_dial.mask = _needleMask;
 			
 			_minLabel = new Label(this);
-			_minLabel.text = _minimum.toString();
+			_minLabel.text = Std.string(_minimum);
 			
 			_maxLabel = new Label(this);
 			_maxLabel.autoSize = true;
-			_maxLabel.text = _maximum.toString();
+			_maxLabel.text = Std.string(_maximum);
 			
 			_label = new Label(this);
 			_label.text = _labelText;
@@ -133,17 +126,17 @@ package com.bit101.components;
 		 */
 		public override function draw():Void
 		{
-			var startAngle:Int = -140 * Math.PI / 180;
-			var endAngle:Int = -40 * Math.PI / 180;
+			var startAngle:Float = -140 * Math.PI / 180;
+			var endAngle:Float = -40 * Math.PI / 180;
 			
 			drawBackground();
 			drawDial(startAngle, endAngle);
 			drawTicks(startAngle, endAngle);
 			drawNeedle();
 			
-			_minLabel.move(10, _height - _minLabel.height - 4);
-			_maxLabel.move(_width - _maxLabel.width - 10, _height - _maxLabel.height - 4);
-			_label.move((_width - _label.width) / 2, _height * .5);
+			_minLabel.move(10, _height - _minLabel._height - 4);
+			_maxLabel.move(_width - _maxLabel._width - 10, _height - _maxLabel._height - 4);
+			_label.move((_width - _label._width) / 2, _height * .5);
 			update();
 		}
 		
@@ -190,11 +183,11 @@ package com.bit101.components;
 			var r2:Float = _height * 0.96;
 			
 			_dial.graphics.moveTo(Math.cos(startAngle) * r1, Math.sin(startAngle) * r1);
-			var i:Int = startAngle;
+			var i:Float = startAngle;
 			while (i < endAngle)
 			{
 				_dial.graphics.lineTo(Math.cos(i) * r1, Math.sin(i) * r1);
-				i += .1;
+				i += 0.1;
 			}
 			_dial.graphics.lineTo(Math.cos(endAngle) * r1, Math.sin(endAngle) * r1);
 			
@@ -203,7 +196,7 @@ package com.bit101.components;
 			while (i > startAngle)
 			{
 				_dial.graphics.lineTo(Math.cos(i) * r2, Math.sin(i) * r2);
-				i -= .1;
+				i -= 0.1;
 			}
 			_dial.graphics.lineTo(Math.cos(startAngle) * r2, Math.sin(startAngle) * r2);
 			_dial.graphics.lineTo(Math.cos(startAngle) * r1, Math.sin(startAngle) * r1);
@@ -218,10 +211,10 @@ package com.bit101.components;
 			var r1:Float = _height * 1.05;
 			var r2:Float = _height * 0.96;
 			var r3:Float = _height * 1.13;
-			var tick:Int = 0;
+			var tick:Float = 0;
 			for(i in 0...9)
 			{
-				var angle:Int = startAngle + i * (endAngle - startAngle) / 8;
+				var angle:Float = startAngle + i * (endAngle - startAngle) / 8;
 				_dial.graphics.moveTo(Math.cos(angle) * r2, Math.sin(angle) * r2);
 				if(tick++ % 2 == 0)
 				{
@@ -255,8 +248,7 @@ package com.bit101.components;
 		 */
 		function update():Void
 		{
-			_value = Math.max(_value, _minimum);
-			_value = Math.min(_value, _maximum);
+			_value = Math.min(Math.max(_value, _minimum), _maximum);
 			_targetRotation = -50 + _value / (_maximum - _minimum) * 100;
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
@@ -270,7 +262,7 @@ package com.bit101.components;
 		 */
 		function onEnterFrame(event:Event):Void
 		{
-			var dist:Int = _targetRotation - _needle.rotation;
+			var dist:Float = _targetRotation - _needle.rotation;
 			_velocity += dist * .05;
 			_velocity *= _damp;
 			if(Math.abs(_velocity) < .1 && Math.abs(dist) < .1)
@@ -291,14 +283,14 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the maximum value for the meter.
 		 */
-		public function setMaximum(value:Float):Float
+		function _setMaximum(value:Float):Float
 		{
 			_maximum = value;
-			_maxLabel.text = _maximum.toString();
+			_maxLabel.text = Std.string(_maximum);
 			update();
 			return value;
 		}
-		public function getMaximum():Float
+		function _getMaximum():Float
 		{
 			return _maximum;
 		}
@@ -306,14 +298,14 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the minimum value for the meter.
 		 */
-		public function setMinimum(value:Float):Float
+		function _setMinimum(value:Float):Float
 		{
 			_minimum = value;
-			_minLabel.text = _minimum.toString();
+			_minLabel.text = Std.string(_minimum);
 			update();
 			return value;
 		}
-		public function getMinimum():Float
+		function _getMinimum():Float
 		{
 			return _minimum;
 		}
@@ -321,42 +313,42 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the current value for the meter.
 		 */
-		public function setValue(val:Float):Float
+		function _setValue(val:Float):Float
 		{
 			_value = val;
 			update();
 			return val;
 		}
-		public function getValue():Float
+		function _getValue():Float
 		{
 			return _value;
 		}
 		
 		/**
-		 * Gets / sets the label shown on the meter.
+		 * Gets / _sets the label shown on the meter.
 		 */
-		public function setLabel(value:String):String
+		function _setLabel(value:String):String
 		{
 			_labelText = value;
 			_label.text = _labelText;
 			return value;
 		}
-		public function getLabel():String
+		function _getLabel():String
 		{
 			return _labelText;
 		}
 		
 		/**
-		 * Gets / sets whether or not value labels will be shown for max and min values.
+		 * Gets / _sets whether or not value labels will be shown for max and min values.
 		 */
-		public function setShowValues(value:Bool):Bool
+		function _setShowValues(value:Bool):Bool
 		{
 			_showValues = value;
-			_minLabel.visible = _showValues;
-			_maxLabel.visible = _showValues;
+			_minLabel._visible = _showValues;
+			_maxLabel._visible = _showValues;
 			return value;
 		}
-		public function getShowValues():Bool
+		function _getShowValues():Bool
 		{
 			return _showValues;
 		}

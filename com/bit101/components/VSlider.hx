@@ -46,7 +46,7 @@ package com.bit101.components;
 		 * @param ypos The y position to place this component.
 		 * @param defaultHandler The event handling function to handle the default event for this component.
 		 */
-		public function new(?parent:DisplayObjectContainer=null, ?xpos:Int=0, ?ypos:Int=0, ?defaultHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer=null, ?xpos:Float=0, ?ypos:Float=0, ?defaultHandler:Dynamic = null)
 		{
 			super(Slider.VERTICAL, parent, xpos, ypos, defaultHandler);
 		}

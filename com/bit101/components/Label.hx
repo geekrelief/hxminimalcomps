@@ -35,10 +35,8 @@ package com.bit101.components;
 	
 	class Label extends Component {
 		
-		public var autoSize(getAutoSize, setAutoSize) : Bool
-		;
-		public var text(getText, setText) : String
-		;
+		public var autoSize(_getAutoSize, _setAutoSize) : Bool ;
+		public var text(_getText, _setText) : String ;
 		var _autoSize:Bool ;
 		var _text:String ;
 		var _tf:TextField;
@@ -50,11 +48,9 @@ package com.bit101.components;
 		 * @param ypos The y position to place this component.
 		 * @param text The string to use as the initial text in this component.
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?text:String = "")
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?text:String = "")
 		{
-			
 			_autoSize = true;
-			_text = "";
 			_text = text;
 			super(parent, xpos, ypos);
 		}
@@ -77,9 +73,9 @@ package com.bit101.components;
 			_height = 18;
 			_tf = new TextField();
 			_tf.height = _height;
-			_tf.embedFonts = true;
-			_tf.selectable = false;
-			_tf.mouseEnabled = false;
+			//_tf.embedFonts = true;
+			//_tf.selectable = false;
+			//_tf.mouseEnabled = false;
 			_tf.defaultTextFormat = new TextFormat("PF Ronda Seven", 8, Style.LABEL_TEXT);			
 			addChild(_tf);
 		}
@@ -122,13 +118,13 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the text of this Label.
 		 */
-		public function setText(t:String):String
+		function _setText(t:String):String
 		{
 			_text = t;
 			invalidate();
 			return t;
 		}
-		public function getText():String
+		function _getText():String
 		{
 			return _text;
 		}
@@ -136,12 +132,12 @@ package com.bit101.components;
 		/**
 		 * Gets / sets whether or not this Label will autosize.
 		 */
-		public function setAutoSize(b:Bool):Bool
+		function _setAutoSize(b:Bool):Bool
 		{
 			_autoSize = b;
 			return b;
 		}
-		public function getAutoSize():Bool
+		function _getAutoSize():Bool
 		{
 			return _autoSize;
 		}

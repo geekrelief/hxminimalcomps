@@ -41,16 +41,11 @@ package com.bit101.components;
 
 	class WheelMenu extends Component {
 		
-		public var borderColor(getBorderColor, setBorderColor) : UInt
-		;
-		public var color(getColor, setColor) : UInt
-		;
-		public var highlightColor(getHighlightColor, setHighlightColor) : UInt
-		;
-		public var selectedIndex(getSelectedIndex, null) : Int
-		;
-		public var selectedItem(getSelectedItem, null) : Dynamic
-		;
+		public var borderColor(_getBorderColor, _setBorderColor) : UInt ;
+		public var color(_getColor, _setColor) : UInt ;
+		public var highlightColor(_getHighlightColor, _setHighlightColor) : UInt ;
+		public var selectedIndex(_getSelectedIndex, null) : Int ;
+		public var selectedItem(_getSelectedItem, null) : Dynamic ;
 		var _borderColor:UInt ;
 		var _buttons:Array<Dynamic>;
 		var _color:UInt ;
@@ -61,7 +56,7 @@ package com.bit101.components;
 		var _numButtons:Int;
 		var _outerRadius:Float;
 		var _selectedIndex:Int ;
-		var _startingAngle:Int ;
+		var _startingAngle:Float ;
 		
 		
 		/**
@@ -74,7 +69,6 @@ package com.bit101.components;
 		 */
 		public function new(parent:DisplayObjectContainer, numButtons:Int, ?outerRadius:Int = 80, ?iconRadius:Int = 60, ?innerRadius:Int = 10, ?defaultHandler:Dynamic = null)
 		{
-			
 			_borderColor = 0xcccccc;
 			_color = 0xffffff;
 			_highlightColor = 0xeeeeee;
@@ -135,7 +129,7 @@ package com.bit101.components;
 		 */
 		public function hide():Void
 		{
-			visible = false;
+			_visible = false;
 			stage.removeEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
 		}
 		
@@ -157,10 +151,10 @@ package com.bit101.components;
 		public function show():Void
 		{
 			parent.addChild(this);
-			x = Math.round(parent.mouseX)
-			y = Math.round(parent.mouseY);
+			_x = Math.round(parent.mouseX);
+			_y = Math.round(parent.mouseY);
 			_selectedIndex = -1;
-			visible = true;
+			_visible = true;
 			stage.addEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
 		}
 		
@@ -192,7 +186,7 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the color of the border around buttons.
 		 */
-		public function setBorderColor(value:UInt):UInt
+		function _setBorderColor(value:UInt):UInt
 		{
 			_borderColor = value;
 			for(i in 0..._numButtons)
@@ -201,7 +195,7 @@ package com.bit101.components;
 			}
 			return value;
 		}
-		public function getBorderColor():UInt
+		function _getBorderColor():UInt
 		{
 			return _borderColor;
 		}
@@ -209,7 +203,7 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the base color of buttons.
 		 */
-		public function setColor(value:UInt):UInt
+		function _setColor(value:UInt):UInt
 		{
 			_color = value;
 			for(i in 0..._numButtons)
@@ -218,7 +212,7 @@ package com.bit101.components;
 			}
 			return value;
 		}
-		public function getColor():UInt
+		function _getColor():UInt
 		{
 			return _color;
 		}
@@ -226,7 +220,7 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the highlighted color of buttons.
 		 */
-		public function setHighlightColor(value:UInt):UInt
+		function _setHighlightColor(value:UInt):UInt
 		{
 			_highlightColor = value;
 			for(i in 0..._numButtons)
@@ -235,7 +229,7 @@ package com.bit101.components;
 			}
 			return value;
 		}
-		public function getHighlightColor():UInt
+		function _getHighlightColor():UInt
 		{
 			return _highlightColor;
 		}
@@ -243,7 +237,7 @@ package com.bit101.components;
 		/**
 		 * Gets the selected index.
 		 */
-		public function getSelectedIndex():Int
+		function _getSelectedIndex():Int
 		{
 			return _selectedIndex;
 		}
@@ -251,11 +245,8 @@ package com.bit101.components;
 		/**
 		 * Gets the selected item.
 		 */
-		public function getSelectedItem():Dynamic
+		function _getSelectedItem():Dynamic
 		{
 			return _items[_selectedIndex];
 		}
-		
-	
-		
 	}

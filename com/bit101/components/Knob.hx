@@ -35,29 +35,22 @@
 	
 	class Knob extends Component {
 		
-		public var label(getLabel, setLabel) : String
-		;
-		public var labelPrecision(getLabelPrecision, setLabelPrecision) : Int
-		;
-		public var maximum(getMaximum, setMaximum) : Float
-		;
-		public var minimum(getMinimum, setMinimum) : Float
-		;
-		public var mouseRange(getMouseRange, setMouseRange) : Float
-		;
-		public var showValue(getShowValue, setShowValue) : Bool
-		;
-		public var value(getValue, setValue) : Float
-		;
+		public var label(_getLabel, _setLabel) : String ;
+		public var labelPrecision(_getLabelPrecision, _setLabelPrecision) : Int ;
+		public var maximum(_getMaximum, _setMaximum) : Float ;
+		public var minimum(_getMinimum, _setMinimum) : Float ;
+		public var mouseRange(_getMouseRange, _setMouseRange) : Float ;
+		public var showValue(_getShowValue, _setShowValue) : Bool ;
+		public var value(_getValue, _setValue) : Float ;
 		var _knob:Sprite;
 		var _label:Label;
 		var _labelText:String ;
-		var _max:Int ;
-		var _min:Int ;
-		var _mouseRange:Int ;
+		var _max:Float ;
+		var _min:Float ;
+		var _mouseRange:Float ;
 		var _precision:Int ;
 		var _startY:Float;
-		var _value:Int ;
+		var _value:Float;
 		var _valueLabel:Label;
 		
 		
@@ -69,10 +62,8 @@
 		 * @param label String containing the label for this component.
 		 * @param defaultHandler The event handling function to handle the default event for this component (change in this case).
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?label:String = "", ?defaultHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?label:String = "", ?defaultHandler:Dynamic = null)
 		{
-			
-			_labelText = "";
 			_max = 100;
 			_min = 0;
 			_mouseRange = 100;
@@ -156,13 +147,11 @@
 		{
 			if(_max > _min)
 			{
-				_value = Math.min(_value, _max);
-				_value = Math.max(_value, _min);
+				_value = Math.max(Math.min(_value, _max), _min);
 			}
 			else
 			{
-				_value = Math.max(_value, _max);
-				_value = Math.min(_value, _min);
+				_value = Math.min(Math.max(_value, _max), _min);
 			}
 		}
 		
@@ -171,14 +160,14 @@
 		 */
 		function formatValueLabel():Void
 		{
-			var mult:Int = Math.pow(10, _precision);
-			var val:String = (Math.round(_value * mult) / mult).toString();
-			var parts:Array<Dynamic> = val.split(".");
+			var mult:Float = Math.pow(10, _precision);
+			var val:String = Std.string(Math.round(_value * mult) / mult);
+			var parts:Array<String> = val.split(".");
 			if(parts[1] == null)
 			{ 
 				if(_precision > 0)
 				{
-					val += "."
+					val += ".";
 				}
 				for(i in 0..._precision)
 				{
@@ -194,7 +183,7 @@
 			}
 			_valueLabel.text = val;
 			_valueLabel.draw();
-			_valueLabel.x = width / 2 - _valueLabel.width / 2;
+			_valueLabel._x = _width / 2 - _valueLabel._width / 2;
 		}
 		
 		///////////////////////////////////
@@ -208,16 +197,16 @@
 		{
 			super.draw();
 			
-			var radius:Int = Math.min(_width, _height) / 2;
+			var radius:Float = Math.min(_width, _height) / 2;
 			drawKnob(radius);
 			
 			_label.text = _labelText;
 			_label.draw();
-			_label.x = _width / 2 - _label.width / 2;
-			_label.y = 0;
+			_label._x = _width / 2 - _label.width / 2;
+			_label._y = 0;
 			
 			formatValueLabel();
-			_valueLabel.y = _height + 20;
+			_valueLabel._y = _height + 20;
 		}
 		
 		///////////////////////////////////
@@ -239,10 +228,10 @@
 		 */
 		function onMouseMove(event:MouseEvent):Void
 		{
-			var oldValue:Int = _value;
-			var diff:Int = _startY - mouseY;
-			var range:Int = _max - _min;
-			var percent:Int = range / _mouseRange;
+			var oldValue:Float = _value;
+			var diff:Float = _startY - mouseY;
+			var range:Float = _max - _min;
+			var percent:Float = range / _mouseRange;
 			_value += percent * diff;
 			correctValue();
 			if(_value != oldValue)
@@ -270,14 +259,14 @@
 		/**
 		 * Gets / sets the maximum value of this knob.
 		 */
-		public function setMaximum(m:Float):Float
+		function _setMaximum(m:Float):Float
 		{
 			_max = m;
 			correctValue();
 			updateKnob();
 			return m;
 		}
-		public function getMaximum():Float
+		function _getMaximum():Float
 		{
 			return _max;
 		}
@@ -285,14 +274,14 @@
 		/**
 		 * Gets / sets the minimum value of this knob.
 		 */
-		public function setMinimum(m:Float):Float
+		function _setMinimum(m:Float):Float
 		{
 			_min = m;
 			correctValue();
 			updateKnob();
 			return m;
 		}
-		public function getMinimum():Float
+		function _getMinimum():Float
 		{
 			return _min;
 		}
@@ -300,14 +289,14 @@
 		/**
 		 * Sets / gets the current value of this knob.
 		 */
-		public function setValue(v:Float):Float
+		function _setValue(v:Float):Float
 		{
 			_value = v;
 			correctValue();
 			updateKnob();
 			return v;
 		}
-		public function getValue():Float
+		function _getValue():Float
 		{
 			return _value;
 		}
@@ -315,12 +304,12 @@
 		/**
 		 * Sets / gets the number of pixels the mouse needs to move to make the value of the knob go from min to max.
 		 */
-		public function setMouseRange(value:Float):Float
+		function _setMouseRange(value:Float):Float
 		{
 			_mouseRange = value;
 			return value;
 		}
-		public function getMouseRange():Float
+		function _getMouseRange():Float
 		{
 			return _mouseRange;
 		}
@@ -328,12 +317,12 @@
 		/**
 		 * Gets / sets the number of decimals to format the value label.
 		 */
-		public function setLabelPrecision(decimals:Int):Int
+		function _setLabelPrecision(decimals:Int):Int
 		{
 			_precision = decimals;
 			return decimals;
 		}
-		public function getLabelPrecision():Int
+		function _getLabelPrecision():Int
 		{
 			return _precision;
 		}
@@ -341,26 +330,26 @@
 		/**
 		 * Gets / sets whether or not to show the value label.
 		 */
-		public function setShowValue(value:Bool):Bool
+		function _setShowValue(value:Bool):Bool
 		{
-			_valueLabel.visible = value;
+			_valueLabel._visible = value;
 			return value;
 		}
-		public function getShowValue():Bool
+		function _getShowValue():Bool
 		{
-			return _valueLabel.visible;
+			return _valueLabel._visible;
 		}
 		
 		/**
 		 * Gets / sets the text shown in this component's label.
 		 */
-		public function setLabel(str:String):String
+		function _setLabel(str:String):String
 		{
 			_labelText = str;
 			draw();
 			return str;
 		}
-		public function getLabel():String
+		function _getLabel():String
 		{
 			return _labelText;
 		}

@@ -34,12 +34,9 @@ package com.bit101.components;
 
 	class PushButton extends Component {
 		
-		public var label(getLabel, setLabel) : String
-		;
-		public var selected(getSelected, setSelected) : Bool
-		;
-		public var toggle(getToggle, setToggle) : Bool
-		;
+		public var label(_getLabel, _setLabel) : String ;
+		public var selected(_getSelected, _setSelected) : Bool ;
+		public var toggle(_getToggle, _setToggle) : Bool ;
 		var _back:Sprite;
 		var _face:Sprite;
 		var _label:Label;
@@ -57,7 +54,7 @@ package com.bit101.components;
 		 * @param label The string to use for the initial label of this component.
  		 * @param defaultHandler The event handling function to handle the default event for this component (click in this case).
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?label:String = "", ?defaultHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?label:String = "", ?defaultHandler:Dynamic = null)
 		{
 			
 			_labelText = "";
@@ -213,38 +210,38 @@ package com.bit101.components;
 		/**
 		 * Sets / gets the label text shown on this Pushbutton.
 		 */
-		public function setLabel(str:String):String
+		public function _setLabel(str:String):String
 		{
 			_labelText = str;
 //			invalidate();
 			draw();
 			return str;
 		}
-		public function getLabel():String
+		public function _getLabel():String
 		{
 			return _labelText;
 		}
 		
-		public function setSelected(value:Bool):Bool
+		public function _setSelected(value:Bool):Bool
 		{
-			if(!_toggle) return;
+			if(!_toggle) return _selected;
 			
 			_selected = value;
 			_down = _selected;
 			_face.filters = [getShadow(1, _selected)];
 			return value;
 		}
-		public function getSelected():Bool
+		public function _getSelected():Bool
 		{
 			return _selected;
 		}
 		
-		public function setToggle(value:Bool):Bool
+		public function _setToggle(value:Bool):Bool
 		{
 			_toggle = value;
 			return value;
 		}
-		public function getToggle():Bool
+		public function _getToggle():Bool
 		{
 			return _toggle;
 		}

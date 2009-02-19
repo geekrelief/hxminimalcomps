@@ -51,7 +51,7 @@ package com.bit101.components;
 		 * @param label The string to use as the label for this component.
 		 * @param defaultHandler The event handling function to handle the default event for this component.
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?x:Int = 0, ?y:Int = 0, ?label:String = "", ?defaultEventHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer = null, ?x:Float = 0, ?y:Float = 0, ?label:String = "", ?defaultEventHandler:Dynamic = null)
 		{
 			_sliderClass = HSlider;
 			super(parent, x, y, label, defaultEventHandler);
@@ -71,7 +71,7 @@ package com.bit101.components;
 		 */
 		override function positionLabel():Void
 		{
-			_valueLabel.x = _slider.x + _slider.width + 5;
+			_valueLabel._x = _slider._x + _slider._width + 5;
 		}
 		
 		
@@ -87,11 +87,10 @@ package com.bit101.components;
 		public override function draw():Void
 		{
 			super.draw();
-			_slider.x = _label.width + 5;
-			_slider.y = height / 2 - _slider.height / 2;
-			_slider.width = width - _label.width - 50 - 10;
-			
-			_valueLabel.x = _slider.x + _slider.width + 5;
+			_slider._x = _label.width + 5;
+			_slider._y = _height / 2 - _slider._height / 2;
+			_slider._width = _width - _label._width - 50 - 10;
+			_valueLabel._x = _slider._x + _slider._width + 5;
 		}
 		
 		///////////////////////////////////

@@ -43,10 +43,12 @@ package com.bit101.components;
 
 	class Component extends Sprite {
 		
-		public var _height(getHeight, setHeight) : Float ;
-		public var _width(getWidth, setWidth) : Float ;
-		public var _x(getX, setX) : Float;
-		public var _y(getY, setY) : Float;
+		public var _height(_getHeight, _setHeight) : Float ;
+		public var _width(_getWidth, _setWidth) : Float ;
+		public var _x(_getX, _setX) : Float;
+		public var _y(_getY, _setY) : Float;
+        public var _visible(_getVisible, _setVisible):Bool;
+
 		/*[Embed(source="/assets/pf_ronda_seven.ttf", fontName="PF Ronda Seven", mimeType="application/x-font")]*/
 		var Ronda:Class<Dynamic>;
 		
@@ -63,8 +65,8 @@ package com.bit101.components;
 		 * @param xpos The x position to place this component.
 		 * @param ypos The y position to place this component.
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0){
-			
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0){
+		    super();	
 			_width = 0;
 			_height = 0;
 			move(xpos, ypos);
@@ -108,7 +110,7 @@ package com.bit101.components;
 		function invalidate():Void
 		{
 //			draw();
-			addEventListener(Event.ENTER_FRAME, onInvalidate);
+            addEventListener(Event.ENTER_FRAME, onInvalidate);
 		}
 		
 		
@@ -184,7 +186,7 @@ package com.bit101.components;
 		/**
 		 * Sets/gets the width of the component.
 		 */
-		function setWidth(w:Float):Float
+		function _setWidth(w:Float):Float
 		{
 			_width = w;
 			invalidate();
@@ -192,7 +194,7 @@ package com.bit101.components;
 			return w;
 		}
 
-		function getWidth():Float
+		function _getWidth():Float
 		{
 			return _width;
 		}
@@ -200,39 +202,47 @@ package com.bit101.components;
 		/**
 		 * Sets/gets the height of the component.
 		 */
-		function setHeight(h:Float):Float
+		function _setHeight(h:Float):Float
 		{
 			_height = h;
 			invalidate();
 			dispatchEvent(new Event(Event.RESIZE));
 			return h;
 		}
-		function getHeight():Float
+		function _getHeight():Float
 		{
 			return _height;
 		}
 
-        function getX():Float {
+        function _getX():Float {
             return x;
         }
 		
 		/**
 		 * Overrides the setter for x to always place the component on a whole pixel.
 		 */
-		inline function setX(value:Float):Float{
+		inline function _setX(value:Float):Float{
 			x = Math.round(value);
 			return x;
 		}
 
-	    function getY():Float {
+	    function _getY():Float {
             return y;
         }
 		
 		/**
 		 * Overrides the setter for y to always place the component on a whole pixel.
 		 */
-		inline function setY(value:Float):Float{
+		inline function _setY(value:Float):Float{
 			y = Math.round(value);
 			return y;
 		}
+
+        inline function _getVisible():Bool {
+            return visible;
+        }
+        inline function _setVisible(v:Bool):Bool {
+            visible = v;
+            return visible;
+        }
 	}

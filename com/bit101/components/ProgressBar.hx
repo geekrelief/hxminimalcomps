@@ -33,14 +33,12 @@ package com.bit101.components;
 	
 	class ProgressBar extends Component {
 		
-		public var maximum(getMaximum, setMaximum) : Float
-		;
-		public var value(getValue, setValue) : Float
-		;
+		public var maximum(_getMaximum, _setMaximum) : Float ;
+		public var value(_getValue, _setValue) : Float ;
 		var _back:Sprite;
 		var _bar:Sprite;
-		var _value:Int ;
-		var _max:Int ;
+		var _value:Float ;
+		var _max:Float ;
 
 		/**
 		 * Constructor
@@ -48,7 +46,7 @@ package com.bit101.components;
 		 * @param xpos The x position to place this component.
 		 * @param ypos The y position to place this component.
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0)
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0)
 		{
 			
 			_value = 0;
@@ -111,8 +109,8 @@ package com.bit101.components;
 			_bar.graphics.clear();
 			_bar.graphics.beginFill(Style.PROGRESS_BAR);
 			_bar.graphics.drawRect(0, 0, _width - 2, _height - 2);
-			_bar.scaleX = 0;
 			_bar.graphics.endFill();
+            update();
 		}
 		
 		
@@ -129,14 +127,14 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the maximum value of the ProgressBar.
 		 */
-		public function setMaximum(m:Float):Float
+		function _setMaximum(m:Float):Float
 		{
 			_max = m;
 			_value = Math.min(_value, _max);
 			update();
 			return m;
 		}
-		public function getMaximum():Float
+		function _getMaximum():Float
 		{
 			return _max;
 		}
@@ -144,13 +142,13 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the current value of the ProgressBar.
 		 */
-		public function setValue(v:Float):Float
+		function _setValue(v:Float):Float
 		{
 			_value = Math.min(v, _max);
 			update();
 			return v;
 		}
-		public function getValue():Float
+		function _getValue():Float
 		{
 			return _value;
 		}

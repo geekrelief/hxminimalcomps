@@ -30,9 +30,7 @@
 package com.bit101.components;
 
 	class Style
-	 {
-		public function new() { }
-		
+    {
 		public static var BACKGROUND:UInt = 0xCCCCCC;
 		public static var BUTTON_FACE:UInt = 0xFFFFFF;
 		public static var INPUT_TEXT:UInt = 0x333333;

@@ -34,10 +34,8 @@ package com.bit101.components;
 	
 	class Panel extends Component {
 		
-		public var color(getColor, setColor) : Int
-		;
-		public var shadow(getShadow, setShadow) : Bool
-		;
+		public var color(_getColor, _setColor) : Int ;
+		public var shadow(_getShadow, _setShadow) : Bool ;
 		var _mask:Sprite;
 		var _background:Shape;
 		var _color:Int ;
@@ -56,9 +54,8 @@ package com.bit101.components;
 		 * @param xpos The x position to place this component.
 		 * @param ypos The y position to place this component.
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0)
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0)
 		{
-			
 			_color = -1;
 			_shadow = true;
 			super(parent, xpos, ypos);
@@ -138,7 +135,7 @@ package com.bit101.components;
 		/**
 		 * Gets / sets whether or not this Panel will have an inner shadow.
 		 */
-		public function setShadow(b:Bool):Bool
+		public function _setShadow(b:Bool):Bool
 		{
 			_shadow = b;
 			if(_shadow)
@@ -151,7 +148,7 @@ package com.bit101.components;
 			}
 			return b;
 		}
-		public function getShadow():Bool
+		public function _getShadow():Bool
 		{
 			return _shadow;
 		}
@@ -159,13 +156,13 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the backgrond color of this panel.
 		 */
-		public function setColor(c:Int):Int
+		public function _setColor(c:Int):Int
 		{
 			_color = c;
 			invalidate();
 			return c;
 		}
-		public function getColor():Int
+		public function _getColor():Int
 		{
 			return _color;
 		}

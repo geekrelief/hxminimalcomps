@@ -35,14 +35,10 @@ package com.bit101.components;
 	
 	class InputText extends Component {
 		
-		public var maxChars(getMaxChars, setMaxChars) : Int
-		;
-		public var password(getPassword, setPassword) : Bool
-		;
-		public var restrict(getRestrict, setRestrict) : String
-		;
-		public var text(getText, setText) : String
-		;
+		public var maxChars(_getMaxChars, _setMaxChars) : Int ;
+		public var password(_getPassword, _setPassword) : Bool ;
+		public var restrict(_getRestrict, _setRestrict) : String ;
+		public var text(_getText, _setText) : String ;
 		var _back:Sprite;
 		var _password:Bool ;
 		var _text:String ;
@@ -56,11 +52,10 @@ package com.bit101.components;
 		 * @param text The string containing the initial text of this component.
 		 * @param defaultHandler The event handling function to handle the default event for this component (change in this case).
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?text:String = "", ?defaultHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?text:String = "", ?defaultHandler:Dynamic = null)
 		{
 			
 			_password = false;
-			_text = "";
 			_text = text;
 			super(parent, xpos, ypos);
 			if(defaultHandler != null)
@@ -88,7 +83,7 @@ package com.bit101.components;
 			addChild(_back);
 			
 			_tf = new TextField();
-			_tf.embedFonts = true;
+			//_tf.embedFonts = true;
 			_tf.selectable = true;
 			_tf.type = TextFieldType.INPUT;
 			_tf.defaultTextFormat = new TextFormat("PF Ronda Seven", 8, Style.INPUT_TEXT);
@@ -159,13 +154,13 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the text shown in this InputText.
 		 */
-		public function setText(t:String):String
+		function _setText(t:String):String
 		{
 			_text = t;
 			invalidate();
 			return t;
 		}
-		public function getText():String
+		function _getText():String
 		{
 			return _text;
 		}
@@ -173,12 +168,12 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the list of characters that are allowed in this TextInput.
 		 */
-		public function setRestrict(str:String):String
+		function _setRestrict(str:String):String
 		{
 			_tf.restrict = str;
 			return str;
 		}
-		public function getRestrict():String
+		function _getRestrict():String
 		{
 			return _tf.restrict;
 		}
@@ -186,12 +181,12 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the maximum number of characters that can be shown in this InputText.
 		 */
-		public function setMaxChars(max:Int):Int
+		function _setMaxChars(max:Int):Int
 		{
 			_tf.maxChars = max;
 			return max;
 		}
-		public function getMaxChars():Int
+		function _getMaxChars():Int
 		{
 			return _tf.maxChars;
 		}
@@ -199,13 +194,13 @@ package com.bit101.components;
 		/**
 		 * Gets / sets whether or not this input text will show up as password (asterisks).
 		 */
-		public function setPassword(b:Bool):Bool
+		function _setPassword(b:Bool):Bool
 		{
 			_password = b;
 			invalidate();
 			return b;
 		}
-		public function getPassword():Bool
+		function _getPassword():Bool
 		{
 			return _password;
 		}

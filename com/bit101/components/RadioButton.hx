@@ -35,17 +35,15 @@ package com.bit101.components;
 	
 	class RadioButton extends Component {
 		
-		public var label(getLabel, setLabel) : String
-		;
-		public var selected(getSelected, setSelected) : Bool
-		;
+		public var label(_getLabel, _setLabel) : String ;
+		public var selected(_getSelected, _setSelected) : Bool ;
 		var _back:Sprite;
 		var _button:Sprite;
 		var _selected:Bool ;
 		var _label:Label;
 		var _labelText:String ;
 		
-		static var buttons:Array<Dynamic>;
+		static var buttons:Array<RadioButton>;
 		
 		
 		/**
@@ -56,11 +54,8 @@ package com.bit101.components;
 		 * @param label The string to use for the initial label of this component.
 		 * @param defaultHandler The event handling function to handle the default event for this component (click in this case).
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?label:String = "", ?checked:Bool = false, ?defaultHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?label:String = "", ?checked:Bool = false, ?defaultHandler:Dynamic = null)
 		{
-			
-			_selected = false;
-			_labelText = "";
 			RadioButton.addButton(this);
 			_selected = checked;
 			_labelText = label;
@@ -91,11 +86,11 @@ package com.bit101.components;
 		 */
 		static function clear(rb:RadioButton):Void
 		{
-			for(i in 0...buttons.length)
+			for(r in buttons)
 			{
-				if(buttons[i] != rb)
+				if(r != rb)
 				{
-					buttons[i].selected = false;
+					r.selected = false;
 				}
 			}
 		}
@@ -187,7 +182,7 @@ package com.bit101.components;
 		/**
 		 * Sets / gets the selected state of this CheckBox.
 		 */
-		public function setSelected(s:Bool):Bool
+		public function _setSelected(s:Bool):Bool
 		{
 			_selected = s;
 			_button.visible = _selected;
@@ -197,7 +192,7 @@ package com.bit101.components;
 			}
 			return s;
 		}
-		public function getSelected():Bool
+		public function _getSelected():Bool
 		{
 			return _selected;
 		}
@@ -205,13 +200,13 @@ package com.bit101.components;
 		/**
 		 * Sets / gets the label text shown on this CheckBox.
 		 */
-		public function setLabel(str:String):String
+		public function _setLabel(str:String):String
 		{
 			_labelText = str;
 			invalidate();
 			return str;
 		}
-		public function getLabel():String
+		public function _getLabel():String
 		{
 			return _labelText;
 		}

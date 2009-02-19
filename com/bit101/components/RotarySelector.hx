@@ -35,12 +35,9 @@ package com.bit101.components;
 	
 	class RotarySelector extends Component {
 		
-		public var choice(getChoice, setChoice) : UInt
-		;
-		public var labelMode(getLabelMode, setLabelMode) : String
-		;
-		public var numChoices(getNumChoices, setNumChoices) : UInt
-		;
+		public var choice(_getChoice, _setChoice) : UInt ;
+		public var labelMode(_getLabelMode, _setLabelMode) : String ;
+		public var numChoices(_getNumChoices, _setNumChoices) : UInt ;
 		public static var ALPHABETIC:String = "alphabetic";
 		public static var NUMERIC:String = "numeric";
 		public static var NONE:String = "none";
@@ -64,10 +61,9 @@ package com.bit101.components;
 		 * @param label String containing the label for this component.
 		 * @param defaultHandler The event handling function to handle the default event for this component (change in this case).
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?label:String = "", ?defaultHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?label:String = "", ?defaultHandler:Dynamic = null)
 		{
 			
-			_labelText = "";
 			_numChoices = 2;
 			_choice = 0;
 			_labelMode = ALPHABETIC;
@@ -176,20 +172,20 @@ package com.bit101.components;
 		{
 			super.draw();
 			
-			var radius:Int = Math.min(_width, _height) / 2;
+			var radius:Float = Math.min(_width, _height) / 2;
 			drawKnob(radius);
 			resetLabels();
 			
 			var arc:Float = Math.PI * 1.5 / _numChoices; // the angle between each choice
-			var start:Int = - Math.PI / 2 - arc * (_numChoices - 1) / 2; // the starting angle for choice 0
+			var start:Float = - Math.PI / 2 - arc * (_numChoices - 1) / 2; // the starting angle for choice 0
 			
 			graphics.clear();
 			graphics.lineStyle(4, Style.BACKGROUND, .5);
 			for(i in 0..._numChoices)
 			{
-				var angle:Int = start + arc * i;
-				var sin:Int = Math.sin(angle);
-				var cos:Int = Math.cos(angle);
+				var angle:Float = start + arc * i;
+				var sin:Float = Math.sin(angle);
+				var cos:Float = Math.cos(angle);
 				
 				graphics.moveTo(_knob.x, _knob.y);
 				graphics.lineTo(_knob.x + cos * (radius + 2), _knob.y + sin * (radius + 2));
@@ -205,7 +201,7 @@ package com.bit101.components;
 				}
 				else if(_labelMode == NUMERIC)
 				{
-					lab.text = (i + 1).toString();
+					lab.text = Std.string(i + 1);
 				}
 				else if(_labelMode == ROMAN)
 				{
@@ -218,7 +214,7 @@ package com.bit101.components;
 				}
 			}
 			
-			angle = start + arc * _choice;
+			var angle:Float = start + arc * _choice;
 			graphics.lineStyle(4, Style.LABEL_TEXT);
 			graphics.moveTo(_knob.x, _knob.y);
 			graphics.lineTo(_knob.x + Math.cos(angle) * (radius + 2), _knob.y + Math.sin(angle) * (radius + 2));
@@ -268,13 +264,13 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the number of available choices (maximum of 10).
 		 */
-		public function setNumChoices(value:UInt):UInt
+		public function _setNumChoices(value:UInt):UInt
 		{
-			_numChoices = Math.min(value, 10);
+			_numChoices = Std.int(Math.min(value, 10));
 			draw();
 			return value;
 		}
-		public function getNumChoices():UInt
+		public function _getNumChoices():UInt
 		{
 			return _numChoices;
 		}
@@ -282,14 +278,14 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the current choice, keeping it in range of 0 to numChoices - 1.
 		 */
-		public function setChoice(value:UInt):UInt
+		public function _setChoice(value:UInt):UInt
 		{
-			_choice = Math.max(0, Math.min(_numChoices - 1, value));
+			_choice = Std.int(Math.max(0, Math.min(_numChoices - 1, value)));
 			draw();
 			dispatchEvent(new Event(Event.CHANGE));
 			return value;
 		}
-		public function getChoice():UInt
+		public function _getChoice():UInt
 		{
 			return _choice;
 		}
@@ -297,13 +293,13 @@ package com.bit101.components;
 		/**
 		 * Specifies what will be used as labels for each choice. Valid values are "alphabetic", "numeric", and "none".
 		 */
-		public function setLabelMode(value:String):String
+		public function _setLabelMode(value:String):String
 		{
 			_labelMode = value;
 			draw();
 			return value;
 		}
-		public function getLabelMode():String
+		public function _getLabelMode():String
 		{
 			return _labelMode;
 		}

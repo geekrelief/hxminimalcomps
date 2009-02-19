@@ -42,22 +42,7 @@ package com.bit101.components;
 		 * @param label The string to use as the label for this component.
 		 * @param defaultHandler The event handling function to handle the default event for this component.
 		 */
-		
-		
-		
-		public var width(getWidth, null) : Float
-		;
-		
-		
-		/**
-		 * Constructor
-		 * @param parent The parent DisplayObjectContainer on which to add this VUISlider.
-		 * @param xpos The x position to place this component.
-		 * @param ypos The y position to place this component.
-		 * @param label The string to use as the label for this component.
-		 * @param defaultHandler The event handling function to handle the default event for this component.
-		 */
-		public function new(?parent:DisplayObjectContainer = null, ?x:Int = 0, ?y:Int = 0, ?label:String = "", ?defaultEventHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer = null, ?x:Float = 0, ?y:Float = 0, ?label:String = "", ?defaultEventHandler:Dynamic = null)
 		{
 			_sliderClass = VSlider;
 			super(parent, x, y, label, defaultEventHandler);
@@ -82,19 +67,19 @@ package com.bit101.components;
 		public override function draw():Void
 		{
 			super.draw();
-			_label.x = width / 2 - _label.width / 2;
+			_label._x = _width / 2 - _label._width / 2;
 			
-			_slider.x = width / 2 - _slider.width / 2;
-			_slider.y = _label.height + 5;
-			_slider.height = height - _label.height - _valueLabel.height - 10;
+			_slider._x = _width / 2 - _slider._width / 2;
+			_slider._y = _label._height + 5;
+			_slider._height = _height - _label._height - _valueLabel._height - 10;
 			
-			_valueLabel.x = width / 2 - _valueLabel.width / 2;
-			_valueLabel.y = _slider.y + _slider.height + 5;
+			_valueLabel._x = _width / 2 - _valueLabel._width / 2;
+			_valueLabel._y = _slider._y + _slider._height + 5;
 		}
 		
 		override function positionLabel():Void
 		{
-			_valueLabel.x = width / 2 - _valueLabel.width / 2;
+			_valueLabel._x = _width / 2 - _valueLabel._width / 2;
 		}
 		
 		
@@ -108,7 +93,7 @@ package com.bit101.components;
 		// getter/setters
 		///////////////////////////////////
 		
-		public override function getWidth():Float
+		override function _getWidth():Float
 		{
 			if(_label == null) return _width;
 			return Math.max(_width, _label.width);

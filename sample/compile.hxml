@@ -1,0 +1,5 @@
+-swf main.swf
+-main Main
+-swf-header 1000:400:30:ffffff
+-swf-version 10
+-cp ..

@@ -34,8 +34,7 @@ package com.bit101.components;
 	
 	class ColorChooser extends Component {
 		
-		public var value(getValue, setValue) : UInt
-		;
+		public var value(_getValue, _setValue) : UInt ;
 		var _input:InputText;
 		var _swatch:Sprite;
 		var _value:UInt ;
@@ -48,10 +47,8 @@ package com.bit101.components;
 		 * @param value The initial color value of this component.
 		 * @param defaultHandler The event handling function to handle the default event for this component (change in this case).
 		 */
-		public function new(?parent:DisplayObjectContainer = null, ?xpos:Int = 0, ?ypos:Int =  0, ?value:UInt = 0xff0000, ?defaultHandler:Dynamic = null)
+		public function new(?parent:DisplayObjectContainer = null, ?xpos:Float = 0, ?ypos:Float =  0, ?value:UInt = 0xff0000, ?defaultHandler:Dynamic = null)
 		{
-			
-			_value = 0xff0000;
 			_value = value;
 			super(parent, xpos, ypos);
 			if(defaultHandler != null)
@@ -122,7 +119,7 @@ package com.bit101.components;
 		function onChange(event:Event):Void
 		{
 			event.stopImmediatePropagation();
-			_value = parseInt("0x" + _input.text, 16);
+			_value = Std.parseInt("0x" + _input.text);
 			_input.text = _input.text.toUpperCase();
 			invalidate();
 			dispatchEvent(new Event(Event.CHANGE));
@@ -135,19 +132,15 @@ package com.bit101.components;
 		/**
 		 * Gets / sets the color value of this ColorChooser.
 		 */
-		public function setValue(n:UInt):UInt
+		function _setValue(n:UInt):UInt
 		{
-			var str:String = n.toString(16).toUpperCase();
-			while(str.length < 6)
-			{
-				str = "0" + str;
-			}
+			var str:String = StringTools.hex(n, 6);
 			_input.text = str;
-			_value = parseInt("0x" + _input.text, 16);
+			_value = Std.parseInt("0x" + str);
 			invalidate();
 			return n;
 		}
-		public function getValue():UInt
+		function _getValue():UInt
 		{
 			return _value;
 		}
